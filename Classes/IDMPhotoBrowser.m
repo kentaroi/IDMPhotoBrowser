@@ -611,6 +611,11 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	_pagingScrollView.backgroundColor = [UIColor clearColor];
     _pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
 	[self.view addSubview:_pagingScrollView];
+	if (_pagingScrollView.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) {
+		CGAffineTransform transform = _pagingScrollView.transform;
+		transform.a = -1;
+		[_pagingScrollView setTransform:transform];
+	}
 
     // Transition animation
     [self performPresentAnimation];
@@ -1053,6 +1058,16 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
             captionView.frame = [self frameForCaptionView:captionView atIndex:index];
             [_pagingScrollView addSubview:captionView];
             page.captionView = captionView;
+			
+			// Transform if needed
+			if (_pagingScrollView.transform.a < 0) {
+				NSArray *subviews = captionView != nil ? @[page, captionView] : @[page];
+				for (UIView *subview in subviews) {
+					CGAffineTransform transform = subview.transform;
+					transform.a = _pagingScrollView.transform.a;
+					[subview setTransform:transform];
+				}
+			}
 		}
 	}
 }
