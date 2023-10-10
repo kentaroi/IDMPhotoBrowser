@@ -578,7 +578,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     if (size.width == 0 || size.height == 0) {
         return nil;
     }
-    UIGraphicsBeginImageContextWithOptions(size, YES, 2);
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0.0);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
